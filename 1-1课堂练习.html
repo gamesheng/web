@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>轮播图</title>
+	<style type="text/css">
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	ul li{
+		list-style: none;
+	}
+	.box{
+		width: 1200px;
+		height: 380px;
+		border: 1px solid grey;
+		margin: 100px auto;
+		position: relative;
+		overflow: hidden;
+	}
+	.slider{
+		width: 8400px;
+		position: absolute;
+		left: -1200px;
+	}
+	.slide{
+		width: 1200px;
+		overflow: hidden;
+		float: left;
+	}
+	.box>span{
+		display: block;
+		width: 30px;
+		height: 50px;
+		text-align: center;
+		cursor: pointer;
+	}
+	.box<span{
+		display: block;
+		width: 30px;
+		height: 50px;
+		text-align: center;
+		cursor: pointer;
+	}
+	#word{
+		height: 20px;
+		background-color: gray;
+		position: absolute;
+		top: 20px;
+		border: 1px solid black;
+		width: 100%;
+		z-index: 1;
+	}
+	.tishi{
+		position: relative;
+		width: 1200px;
+		margin: 0px auto;
+		background-color: black;
+	}
+	#zi{
+		line-height: 20px;
+		color: red;
+		font-size: 1px;
+		position: absolute;
+		right: 10px;
+		z-index: 1;
+	}
+	</style>
+	
+</head>
+<body>
+		<div id="word">
+			<div class="zuo" id="left"><img src="images/a15.png"></div>
+			<div class="you"></div>
+			<div class="tishi">
+				<p id="zi">[温馨提示]最近有不少不法分子在网上骗人，请大家注意！！！</p>
+			</div>
+		</div>
+	<div class="box" id="box">
+		<div class="slider" id="slider">
+			<div class="slide"><img src="images/b1.png" alt=""></div>
+			<div class="slide"><img src="images/b2.png" alt=""></div>
+			<div class="slide"><img src="images/b3.png" alt=""></div>
+			<div class="slide"><img src="images/b4.png" alt=""></div>
+			<div class="slide"><img src="images/b5.png" alt=""></div>
+		</div>
+		<span id="left"><</span>
+		<span id="right">></span>
+		<ul class="nav" id="nav">
+			<li class="active"></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+	<script type="text/javascript">
+		var box=document.getElementById('box');
+		var oNavlist=document.getElementById('nav').children;
+		var slider=document.getElementById('slider');
+		var left=document.getElementById('left');
+		var right=document.getElementById('right');
+		var index=1;
+		var timer;
+		var isMoving=false;
+		function next() {
+			if (!isMoving) {
+				return;
+			}
+				isMoving=true;
+				index++;
+				navChange();
+				animate(slider,{left:-1200*index},function(){
+					if (index > 5) {
+						slider.style.left="-1200px";
+						index=1;
+					}
+					isMoving=false;
+				});
+			
+		}
+		function prev() {
+			index--;
+			navChange();
+			animate(slider,{left:-1200*index},function(){
+				if (index===0) {
+					slider.style.left=-1200*5+"px";
+					index=5;
+				}
+				isMoving=false;
+			});
+		}
+		var timer=setInterval(next,2000);
+
+		box.onmouseout=function () {
+			animate(left,{opacity:50});
+			animate(right,{opacity:50});
+			clearInterval(timer);
+		}
+
+		box.onmouseout=function(){
+			animate(left,{opacity:0});
+			animate(right,{opacity:0});
+			timer=setInterval(next,2000);
+		}
+		right.onclick=next;
+		left.onclick=prev;
+
+		for (var i = 0; i < oNavlist.length; i++) {
+			oNavlist[i].idx=i;
+			oNavlist[i].onclick=function () {
+				index=this idx+1;
+				navChange();
+				animate(slider,{left:-1200*index});
+			}
+		}
+
+		function navChange() {
+			for (var i = 0; i < oNavlist.length; i++) {
+				oNavlist[i].className='';
+			}
+			if (index===6) {
+				oNavlist[0].className='active';
+			}else if(index===0){
+				oNavlist[4].className='active';
+			}else{
+				oNavlist[index-1].className='active';
+			}
+		}
+
+
+		// box.onmouseover=function () {
+		// 	animate(left,{opacity:50})
+		// 	animate(right,{opacity:50})
+		// 	clearInterval(timer)
+		// }
+		// box.onmouseout=function () {
+		// 	animate(left,{opacity:0})
+		// 	animate(right,{opacity:0})
+		// 	timer=setInterval(next,3000);
+		// }
+		// right.onclick=next;
+		// left.onclick=prev;
+		// for (var i = 0; i < oNavlist.length; i++) {
+		// 	oNavlist[i].index=i;
+		// 	oNavlist[i].onclick=function () {
+		// 		index=this.index+1;
+		// 		navmove();
+		// 		animate(slider,{left:-1200*index});
+		// 	}
+		// }
+		// function next() {
+		// 	if (isMoving) {
+		// 		return;
+		// 	}
+		// 	isMoving=true;
+		// 	index++;
+		// 	navmove();
+		// 	animate(slider,{left:-1200*index},function(){
+		// 		if (index==6) {
+		// 			slider.style.left='-1200px';
+		// 			index=1;
+		// 		}
+		// 		isMoving=false;
+		// 	});
+		// }
+		// function prev(){
+		// 	if (isMoving) {
+		// 		return;
+		// 	}
+		// 	isMoving=true;
+		// 	index--;
+		// 	navmove();
+		// 	animate(slider,{left:-1200*index},function () {
+		// 		if (index==0) {
+		// 			slider.style.left='-6000px';
+		// 			index=5;
+		// 		}
+		// 		isMoving=false;
+		// 	});
+		// }
+		// function navmove(){
+		// 	for (var i = 0; i < oNavlist.length; i++) {
+		// 		oNavlist[i].className="";
+		// 	}
+		// 	if (index>5) {
+		// 		oNavlist[0].className="active";
+		// 	}else if (index<=0) {
+		// 		oNavlist[4].className="active";
+		// 	}else{
+		// 		oNavlist[index-1].className="active";
+		// 	}
+		// }
+		// timer=setInterval(next,3000);
+	</script>
+</body>
+</html>
